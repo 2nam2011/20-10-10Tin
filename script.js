@@ -326,8 +326,53 @@
       }, 4000);
     }
 
+    // ---------- Nhạc nền ----------
+    const bgm = document.getElementById("bgm");
+    const musicBtn = document.getElementById("music-btn");
+
+    function updateMusicBtn() {
+      if (musicBtn) musicBtn.textContent = bgm && !bgm.paused ? "🔊" : "🔇";
+    }
+
+    function startMusic() {
+      if (!bgm || !bgm.paused) return Promise.resolve();
+      bgm.volume = 0.6;
+      const p = bgm.play();
+      return p && typeof p.then === "function" ? p : Promise.resolve();
+    }
+
+    if (bgm && musicBtn) {
+      musicBtn.classList.add("show");
+      bgm.addEventListener("play", updateMusicBtn);
+      bgm.addEventListener("pause", updateMusicBtn);
+      bgm.addEventListener("error", () => musicBtn.classList.remove("show"), true);
+      updateMusicBtn();
+
+      musicBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        if (bgm.paused) {
+          bgm.volume = 0.6;
+          bgm.play().catch(() => {});
+        } else {
+          bgm.pause();
+        }
+      });
+
+      // Thử phát ngay khi mở web. Nếu trình duyệt chặn tự phát tiếng,
+      // nhạc sẽ chạy ngay ở lần chạm/bấm đầu tiên của người xem.
+      startMusic().catch(() => {
+        const events = ["pointerdown", "keydown", "touchstart"];
+        const unlock = () => {
+          events.forEach((e) => document.removeEventListener(e, unlock, true));
+          startMusic().catch(() => {});
+        };
+        events.forEach((e) => document.addEventListener(e, unlock, true));
+      });
+    }
+
     if (rose) {
       rose.addEventListener("click", () => {
+        startMusic().catch(() => {});
         rose.style.display = "none";
         if (castle) castle.style.display = "flex";
         if (theSvg) theSvg.style.display = "inherit";
@@ -336,7 +381,17 @@
       });
     }
 
-    // Hover is handled in CSS too; this JS only adds accessibility for pointer devices.
+    // Phong thư đang đóng: bấm vào để mở ra.
+    if (valentines) {
+      valentines.addEventListener("click", () => {
+        if (valentines.classList.contains("opened")) return;
+        valentines.classList.add("opened");
+        // Chờ nắp phong thư mở xong (0.6s) rồi mới cho tấm thiệp trượt lên.
+        setTimeout(() => valentines.classList.add("ready"), 700);
+      });
+    }
+
+    // Hover is handled in CSS too (chỉ có tác dụng sau khi phong thư đã mở).
     if (valentines) {
       valentines.addEventListener("pointerenter", () =>
         valentines.classList.add("card-open"),

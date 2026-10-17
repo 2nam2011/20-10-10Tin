@@ -56,8 +56,8 @@ body {
 }
 
 /* Hover mở tấm thiệp - không phụ thuộc jQuery */
-.valentines:hover .card,
-.valentines.card-open .card {
+.valentines.ready:hover .card,
+.valentines.ready.card-open .card {
   top: -90px;
 }
 
@@ -69,6 +69,7 @@ body {
 }
 
 .envelope:before {
+  opacity: 0;
   background-color: #f08080;
   content: "";
   position: absolute;
@@ -80,6 +81,80 @@ body {
   border-radius: 30px 0 0 0;
 }
 
+/* ---- Phong thư đóng / mở ---- */
+.valentines.opened .envelope:before {
+  opacity: 1;
+  transition: opacity 0s linear 0.6s;
+}
+
+.cover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 300px;
+  height: 200px;
+  background-color: #f8ad9d;
+  z-index: 11;
+  transition: opacity 0.2s linear 0.3s;
+}
+
+.valentines.opened .cover {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.flap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 300px;
+  height: 106px;
+  background: linear-gradient(to bottom, #f08080, #e46c6c);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: 50% 0;
+  z-index: 20;
+}
+
+.valentines.opened .flap {
+  pointer-events: none;
+  animation: flapOpen 0.6s ease-in-out forwards;
+}
+
+@keyframes flapOpen {
+  0% {
+    transform: perspective(800px) rotateX(0deg);
+    z-index: 20;
+    opacity: 1;
+  }
+
+  49% {
+    z-index: 20;
+  }
+
+  50% {
+    z-index: 0;
+  }
+
+  99% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: perspective(800px) rotateX(180deg);
+    z-index: 0;
+    opacity: 0;
+  }
+}
+
+.valentines .hearts {
+  opacity: 0;
+}
+
+.valentines.opened .hearts {
+  opacity: 1;
+  transition: opacity 0.3s linear 0.6s;
+}
+
 .card {
   position: absolute;
   background-color: #eae2b7;
@@ -87,9 +162,13 @@ body {
   height: 170px;
   top: 5px;
   left: 15px;
-  box-shadow: -5px -5px 100px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
   z-index: 5;
-  transition: top 0.5s ease;
+  transition: top 0.5s ease, box-shadow 0.3s linear 0.3s;
+}
+
+.valentines.opened .card {
+  box-shadow: -5px -5px 100px rgba(0, 0, 0, 0.4);
 }
 
 .card:before {
@@ -652,4 +731,28 @@ label {
 .mewmew1 img,
 .mewmew2 img {
   width: 100%;
+}
+
+/* ---- Nút bật/tắt nhạc ---- */
+#music-btn {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 46px;
+  height: 46px;
+  border: none;
+  border-radius: 50%;
+  background-color: #fff;
+  color: #e6668a;
+  font-size: 22px;
+  line-height: 46px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  display: none;
+}
+
+#music-btn.show {
+  display: block;
 }
