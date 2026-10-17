@@ -280,7 +280,7 @@
   // ---------- Letter typing ----------
   const titleText = "Gửi 3 nàng công chúa của lớp 10 Tin";
   const bodyText =
-    "Hôm nay là ngày 20/10 lớp chúc các bạn luôn hạnh phúc và gặp nhiều may mắn trong cuộc sống nhá. Hãy luôn giữ mãi nụ cười trên môi và đừng suy nghĩ nhiều về những thứ tiêu cực nhá";
+    "Hôm nay là ngày 20/10, là ngày Quốc tế Phụ nữ. Chúc các bạn nữ lớp mình luôn hạnh phúc, vui vẻ, xinh đẹp và học giỏi. Nhờ sự có mặt của các bạn trong lớp đã mang lại một nét mềm mại cho tập thể lớp 10 Tin. Vì vậy nhân ngày này, các bạn nam gửi tặng cho các bạn một món quà nhỏ coi như lời cảm ơn, mong các bạn sẽ thích nó và trân trọng nó. Chúng mình chỉ có đôi lời như vậy, hy vọng các bông hoa của lớp sẽ có một ngày 20/10 thật vui vẻ và ý nghĩa.";
   let titleTimer = null;
   let bodyTimer = null;
 
@@ -304,10 +304,10 @@
           bodyTimer = setInterval(() => {
             body.textContent += bodyText[j++];
             if (j >= bodyText.length) clearInterval(bodyTimer);
-          }, 35);
+          }, 55);
         }, 500);
       }
-    }, 100);
+    }, 50);
   }
 
   // ---------- Page interactions ----------
